@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { GlobalContext } from "../contexts/BirthdayContext";
 
 export default function HomePage() {
 
     const [now, setNow] = useState(new Date());
+    const { people } = useContext(GlobalContext)
+    const [birthdayPerson, setBirthdayPerson] = useState(null)
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -13,12 +16,18 @@ export default function HomePage() {
     }, []);
 
     useEffect(() => {
-        isSomebodyBirthday(now.toLocaleDateString("it-IT"))
-    }, [now.toLocaleDateString("it-IT")])
+        const today = new Date();
+        const isAbirthdayPerson = people.find(p => {
+            const bday = new Date(p.birthDate);
+            return (
+                bday.getDate() === today.getDate() &&
+                bday.getMonth() === today.getMonth()
+            );
 
-    function isSomebodyBirthday(todayDate){ 
-        
-    }
+        });
+        setBirthdayPerson(isAbirthdayPerson)
+        console.log(birthdayPerson)
+    }, [now, people]);
 
     return (
         <>
@@ -27,6 +36,13 @@ export default function HomePage() {
                 {now.toLocaleDateString("it-IT")} -{" "}
                 {now.toLocaleTimeString("it-IT")}
             </h2>
+            {birthdayPerson && (
+                <div>
+                    <h3>Compleanni di oggi: </h3>
+                    <p>{birthdayPerson.firstName} {birthdayPerson.lastName}</p>
+                </div>
+            )
+            }
         </>
     );
 }
