@@ -19,13 +19,14 @@ export default function ListPage() {
         <>
             <h1>Sono la ListPage</h1>
 
-            {people.map(person => (
-                <div key={person?.id}>
-                    <p>{person?.firstName}</p>
-                    <p>{person?.lastName}</p>
-                    <p>{person?.birthDate}</p>
-                </div>
-            ))}
+            {people?.map(person => {
+                const birthDate = new Date(person?.birthDate);
+                return (
+                    <div key={person?.id}>
+                        {person?.firstName} {person?.lastName} - {birthDate?.toLocaleDateString("it-IT")}
+                    </div>
+                )
+            })}
         </>
 
     )
