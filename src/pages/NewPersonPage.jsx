@@ -26,7 +26,6 @@ export default function NewPersonPage(){
             <input type="date" name="birthDate" onChange={setFieldValue}/> 
             <button type="submit">Invia</button>
            </form>
-            
         </div>
         
     )

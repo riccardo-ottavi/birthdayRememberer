@@ -1,5 +1,6 @@
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { GlobalProvider } from './contexts/BirthdayContext'
 import NavBar from './components/NavBar'
 import HomePage from './pages/HomePage'
 import NewPersonPage from './pages/NewPersonPage'
@@ -9,14 +10,16 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-      <NavBar />
-        <Routes>
-          <Route path='/' element={<HomePage />}/>
-          <Route path='/new' element={<NewPersonPage />}/>
-          <Route path='/list' element={<ListPage />}/>
-        </Routes>
-      </BrowserRouter>
+      <GlobalProvider>
+        <BrowserRouter>
+          <NavBar />
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/new' element={<NewPersonPage />} />
+            <Route path='/list' element={<ListPage />} />
+          </Routes>
+        </BrowserRouter>
+      </GlobalProvider>
     </>
   )
 }

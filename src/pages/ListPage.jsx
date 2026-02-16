@@ -1,19 +1,9 @@
-import { useState, useEffect } from "react"
+import { useContext } from "react"
+import { GlobalContext } from "../contexts/BirthdayContext"
 
 export default function ListPage() {
 
-    const [people, setPeople] = useState([])
-
-    useEffect(() => {
-        fetchList();
-    }, [])
-
-
-    async function fetchList() {
-        const response = await fetch('http://localhost:3000/people')
-        const data = await response.json()
-        setPeople(data)
-    }
+    const { people } = useContext(GlobalContext)
 
     return (
         <>
