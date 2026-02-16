@@ -4,10 +4,28 @@ export default function NewPersonPage(){
 
     const [formData, setFormData] = useState([{}])
 
-    function handleSubmit(e){
-        e.preventDefault()
-        console.log("Form inviato", formData)
+    async function handleSubmit(e) {
+    e.preventDefault();
+
+    const url = "http://localhost:3000/people";
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        console.log("Nuova persona aggiunta:", data);
+
+        setFormData({});
+    } catch (error) {
+        console.error("Errore durante l'invio:", error);
     }
+}
 
     function setFieldValue(e){
         const { value, name } = e.target;

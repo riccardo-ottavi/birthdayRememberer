@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { GlobalContext } from "../contexts/BirthdayContext"
 
 export default function ListPage() {
@@ -13,7 +13,8 @@ export default function ListPage() {
                 const birthDate = new Date(person?.birthDate);
                 return (
                     <div key={person?.id}>
-                        {person?.firstName} {person?.lastName} - {birthDate?.toLocaleDateString("it-IT")}
+                        <p>{person?.firstName} {person?.lastName} - {birthDate?.toLocaleDateString("it-IT")}</p>
+                        <button>Elimina</button>
                     </div>
                 )
             })}

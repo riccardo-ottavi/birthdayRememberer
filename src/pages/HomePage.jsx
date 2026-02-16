@@ -36,9 +36,9 @@ export default function HomePage() {
                 {now.toLocaleDateString("it-IT")} -{" "}
                 {now.toLocaleTimeString("it-IT")}
             </h2>
+            <h3>Compleanni di oggi: </h3>
             {birthdayPerson && (
                 <div>
-                    <h3>Compleanni di oggi: </h3>
                     <p>{birthdayPerson.firstName} {birthdayPerson.lastName}</p>
                 </div>
             )
