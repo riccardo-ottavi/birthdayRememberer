@@ -1,5 +1,9 @@
 export default function NewPersonPage(){
     return(
-        <h1>Sono la NewPersonPage</h1>
+        <div>
+           <h1>Sono la NewPersonPage</h1>
+            <input type="date" /> 
+        </div>
+        
     )
 }
