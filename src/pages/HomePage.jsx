@@ -30,8 +30,7 @@ export default function HomePage() {
     }, [now, people]);
 
     return (
-        <>
-            <h1>Sono la homepage</h1>
+        <div className="container"> 
             <h2>
                 {now.toLocaleDateString("it-IT")} -{" "}
                 {now.toLocaleTimeString("it-IT")}
@@ -46,6 +45,6 @@ export default function HomePage() {
             ) : (
                 <p>No birthdays today!</p>
             )}
-        </>
+        </div>
     );
 }

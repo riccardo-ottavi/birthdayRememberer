@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import { GlobalContext } from "../contexts/BirthdayContext"
 
 export default function ListPage() {
@@ -23,9 +23,7 @@ export default function ListPage() {
 
 
     return (
-        <>
-            <h1>Sono la ListPage</h1>
-
+        <div className="container">
             {people?.map(person => {
                 const birthDate = new Date(person?.birthDate);
                 return (
@@ -35,7 +33,7 @@ export default function ListPage() {
                     </div>
                 )
             })}
-        </>
+        </div>
 
     )
 }

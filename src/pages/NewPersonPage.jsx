@@ -25,6 +25,7 @@ export default function NewPersonPage(){
         console.log("Nuova persona aggiunta:", data);
         setPeople(prev => [...prev, data]);
         setFormData({});
+        alert("Inserimento riuscito!")
     } catch (error) {
         console.error("Errore durante l'invio:", error);
     }
@@ -36,16 +37,15 @@ export default function NewPersonPage(){
     }
 
     return(
-        <div>
-           <h1>Sono la NewPersonPage</h1>
+        <div className="container">
            <form onSubmit={handleSubmit}>
-            <p>Nome</p>
+            <p>First Name</p>
             <input type="text" name="firstName" onChange={setFieldValue}/>
-            <p>Cognome</p>
+            <p>Last Name</p>
             <input type="text" name="lastName" onChange={setFieldValue}/>
             <p>Birth Date</p>
             <input type="date" name="birthDate" onChange={setFieldValue}/> 
-            <button type="submit">Invia</button>
+            <button type="submit">Confirm</button>
            </form>
         </div>
         
