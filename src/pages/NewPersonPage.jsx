@@ -39,28 +39,28 @@ export default function NewPersonPage(){
 
     const fieldError = useMemo(() => {
 
-        if (formData.firstName.trim().length === 0) {
+        if (formData?.firstName?.trim().length === 0) {
             return "Il nome è obbligatorio!";
         }
 
-        if (formData.lastName.trim().length === 0) {
+        if (formData?.lastName?.trim().length === 0) {
             return "Il cognome è obbligatorio!";
         }
 
-        if (!isFieldValid(formData.firstName)) {
+        if (!isFieldValid(formData?.firstName)) {
             return "Il nome contiene caratteri non validi";
         }
 
-        if (!isFieldValid(formData.lastName)) {
+        if (!isFieldValid(formData?.lastName)) {
             return "Il cognome contiene caratteri non validi";
         }
 
-        if (!formData.birthDate) {
+        if (!formData?.birthDate) {
             return "La data di nascita è obbligatoria";
         }
 
         const today = new Date();
-        const selectedDate = new Date(formData.birthDate);
+        const selectedDate = new Date(formData?.birthDate);
 
         if (selectedDate > today) {
             return "La data non può essere nel futuro";
@@ -71,8 +71,11 @@ export default function NewPersonPage(){
     }, [formData]);
 
     function isFieldValid(field) {
-
+        if(field){
+            console.log(typeof field, field)
         if([...field].some((char) => symbols.includes(char))) return false
+        }
+        
         
         return true
     }
