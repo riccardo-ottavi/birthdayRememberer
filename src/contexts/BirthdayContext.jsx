@@ -20,7 +20,8 @@ export function GlobalProvider({ children }) {
     return (
         <GlobalContext.Provider
             value={{
-                people
+                people,
+                setPeople
             }}
         >
             {children}

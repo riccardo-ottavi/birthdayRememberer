@@ -5,7 +5,7 @@ export default function HomePage() {
 
     const [now, setNow] = useState(new Date());
     const { people } = useContext(GlobalContext)
-    const [birthdayPerson, setBirthdayPerson] = useState(null)
+    const [birthdayPerson, setBirthdayPerson] = useState([])
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -17,16 +17,16 @@ export default function HomePage() {
 
     useEffect(() => {
         const today = new Date();
-        const isAbirthdayPerson = people.find(p => {
+        const birthdaysToday  = people.filter(p => {
             const bday = new Date(p.birthDate);
-            return (
+            return(
                 bday.getDate() === today.getDate() &&
                 bday.getMonth() === today.getMonth()
             );
-
         });
-        setBirthdayPerson(isAbirthdayPerson)
-        console.log(birthdayPerson)
+
+        setBirthdayPerson(birthdaysToday)
+        console.log(birthdaysToday)
     }, [now, people]);
 
     return (
@@ -36,13 +36,16 @@ export default function HomePage() {
                 {now.toLocaleDateString("it-IT")} -{" "}
                 {now.toLocaleTimeString("it-IT")}
             </h2>
-            <h3>Compleanni di oggi: </h3>
-            {birthdayPerson && (
-                <div>
-                    <p>{birthdayPerson.firstName} {birthdayPerson.lastName}</p>
-                </div>
-            )
-            }
+            <h3>Today's birthdays: </h3>
+            {birthdayPerson.length > 0 ? (
+                birthdayPerson.map(p => (
+                    <div key={p.id}>
+                        <p>{p.firstName} {p.lastName}</p>
+                    </div>
+                ))
+            ) : (
+                <p>No birthdays today!</p>
+            )}
         </>
     );
 }

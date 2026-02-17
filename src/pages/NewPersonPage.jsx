@@ -1,8 +1,11 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { GlobalContext } from "../contexts/BirthdayContext";
 
 export default function NewPersonPage(){
 
-    const [formData, setFormData] = useState([{}])
+    const [formData, setFormData] = useState({})
+
+    const {setPeople} = useContext(GlobalContext)
 
     async function handleSubmit(e) {
     e.preventDefault();
@@ -20,7 +23,7 @@ export default function NewPersonPage(){
 
         const data = await response.json();
         console.log("Nuova persona aggiunta:", data);
-
+        setPeople(prev => [...prev, data]);
         setFormData({});
     } catch (error) {
         console.error("Errore durante l'invio:", error);
