@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
-import { GlobalContext } from "../context/GlobalContext";
+import { GlobalContext } from "../contexts/BirthdayContext";
 
-export default function Login() {
+export default function LoginPage() {
     const { saveToken } = useContext(GlobalContext);
 
     const [email, setEmail] = useState("");
@@ -10,33 +10,40 @@ export default function Login() {
     const [error, setError] = useState("");
 
     async function handleLogin(e) {
-        e.preventDefault();
-        setLoading(true);
-        setError("");
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-        try {
-            const res = await fetch("http://localhost:3000/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, password })
-            });
+    console.log("Tentativo login...", { email, password });
 
-            const data = await res.json();
+    try {
+        const res = await fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
 
-            if (!res.ok) {
-                throw new Error(data.error || "Errore login");
-            }
+        console.log("Response status:", res.status);
 
-            saveToken(data.token);
+        const data = await res.json();
+        console.log("Response data:", data);
 
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
+        if (!res.ok) {
+            throw new Error(data.error || "Errore login");
         }
+
+        console.log("Login riuscito!");
+        saveToken(data.token);
+
+    } catch (err) {
+        console.log("Errore login:", err.message);
+        setError(err.message);
+    } finally {
+        setLoading(false);
     }
+}
 
     return (
         <div style={{ maxWidth: "400px", margin: "100px auto" }}>
