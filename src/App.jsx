@@ -1,6 +1,9 @@
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { GlobalProvider } from './contexts/BirthdayContext'
+
+import { AuthProvider } from "./contexts/AuthContext";
+import { PeopleProvider } from "./contexts/PeopleContext";
+
 import NavBar from './components/NavBar'
 import HomePage from './pages/HomePage'
 import NewPersonPage from './pages/NewPersonPage'
@@ -9,48 +12,36 @@ import ProtectedRoute from './components/ProtectedRoute'
 import LoginPage from './pages/LoginPage'
 
 function App() {
-
   return (
-    <>
-      <GlobalProvider>
-      <BrowserRouter>
-        <NavBar />
+    <AuthProvider>
+      <PeopleProvider>
+        <BrowserRouter>
+          <NavBar />
 
-        <Routes>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
 
-          <Route path='/login' element={<LoginPage />} />
-
-          <Route
-            path='/'
-            element={
+            <Route path="/" element={
               <ProtectedRoute>
                 <HomePage />
               </ProtectedRoute>
-            }
-          />
+            } />
 
-          <Route
-            path='/new'
-            element={
+            <Route path="/new" element={
               <ProtectedRoute>
                 <NewPersonPage />
               </ProtectedRoute>
-            }
-          />
+            } />
 
-          <Route
-            path='/list'
-            element={
+            <Route path="/list" element={
               <ProtectedRoute>
                 <ListPage />
               </ProtectedRoute>
-            }
-          />
-
-        </Routes>
-      </BrowserRouter>
-    </GlobalProvider>
-    </>
+            } />
+          </Routes>
+        </BrowserRouter>
+      </PeopleProvider>
+    </AuthProvider>
   )
 }
 

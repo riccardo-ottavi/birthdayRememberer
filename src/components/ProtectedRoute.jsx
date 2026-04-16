@@ -1,14 +1,13 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { GlobalContext } from "../contexts/BirthdayContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function ProtectedRoute({ children }) {
-    
-    const { token } = useContext(GlobalContext)
+  const { token } = useContext(AuthContext);
 
-    if (!token) {
-        return <Navigate to="/login" replace />;
-    }
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
 
-    return children;
+  return children;
 }

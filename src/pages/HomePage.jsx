@@ -1,50 +1,69 @@
 import { useState, useEffect, useContext } from "react";
-import { GlobalContext } from "../contexts/BirthdayContext";
+import { API, authHeaders } from "../api";
+import { PeopleContext } from "../contexts/PeopleContext";
 
 export default function HomePage() {
+  const [now, setNow] = useState(new Date());
+  const [birthdayPerson, setBirthdayPerson] = useState([]);
+  const { people } = useContext(PeopleContext)  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
 
-    const [now, setNow] = useState(new Date());
-    const { people } = useContext(GlobalContext)
-    const [birthdayPerson, setBirthdayPerson] = useState([])
+    return () => clearInterval(interval);
+  }, []);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setNow(new Date());
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
-        const today = new Date();
-        const birthdaysToday  = people.filter(p => {
-            const bday = new Date(p.birthDate);
-            return(
-                bday.getDate() === today.getDate() &&
-                bday.getMonth() === today.getMonth()
-            );
+  useEffect(() => {
+    async function fetchPeople() {
+      try {
+        const res = await fetch(`${API}/people`, {
+          headers: authHeaders()
         });
 
-        setBirthdayPerson(birthdaysToday)
-        console.log(birthdaysToday)
-    }, [now, people]);
+        const data = await res.json();
+        setPeople(data);
+      } catch (err) {
+        console.log("Errore fetch people:", err);
+      }
+    }
 
-    return (
-        <div className="container"> 
-            <h2>
-                {now.toLocaleDateString("it-IT")} -{" "}
-                {now.toLocaleTimeString("it-IT")}
-            </h2>
-            <h3>Today's birthdays: </h3>
-            {birthdayPerson.length > 0 ? (
-                birthdayPerson.map(p => (
-                    <div key={p.id}>
-                        <p>{p.firstName} {p.lastName}</p>
-                    </div>
-                ))
-            ) : (
-                <p>No birthdays today!</p>
-            )}
-        </div>
-    );
+    fetchPeople();
+  }, []);
+
+  useEffect(() => {
+    const today = new Date();
+
+    const birthdaysToday = people.filter(p => {
+      const bday = new Date(p.birthDate);
+
+      return (
+        bday.getDate() === today.getDate() &&
+        bday.getMonth() === today.getMonth()
+      );
+    });
+
+    setBirthdayPerson(birthdaysToday);
+  }, [people, now]);
+
+  return (
+    <div className="container">
+      <h2>
+        {now.toLocaleDateString("it-IT")} -{" "}
+        {now.toLocaleTimeString("it-IT")}
+      </h2>
+
+      <h3>Today's birthdays:</h3>
+
+      {birthdayPerson.length > 0 ? (
+        birthdayPerson.map(p => (
+          <div key={p._id}>
+            <p>{p.firstName} {p.lastName}</p>
+          </div>
+        ))
+      ) : (
+        <p>No birthdays today!</p>
+      )}
+    </div>
+  );
 }
