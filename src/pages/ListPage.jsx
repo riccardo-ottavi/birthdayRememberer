@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { PeopleContext } from "../contexts/PeopleContext";
 import Modal from "../components/Modal";
 import { authHeaders, API, apiFetch } from "../api";
+import toast from "react-hot-toast";
+
 
 export default function ListPage() {
   const { people, refreshPeople } = useContext(PeopleContext);
@@ -11,23 +13,24 @@ export default function ListPage() {
 
   async function handleDelete(id) {
   try {
-    const data = await apiFetch(`/people/${id}`, {
+    const res = await apiFetch(`/people/${id}`, {
       method: "DELETE",
-      headers: authHeaders()
     });
 
-    if (!data) return;  
+    if (!res) return;
 
-    if (data.error) {
-      alert(data.error || "Errore eliminazione");
+    if (!res.ok) {
+      toast.error(res.data?.error || "Errore eliminazione");
       return;
     }
 
-    console.log(data.message, data.deletedPerson);
+    toast.success("Contatto eliminato");
 
     await refreshPeople();
+
   } catch (error) {
     console.error("Errore eliminazione:", error);
+    toast.error("Errore di rete");
   }
 }
 

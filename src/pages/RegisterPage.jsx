@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../api";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function RegisterPage() {
     e.preventDefault();
 
     if (!form.email.trim() || !form.password.trim()) {
-      alert("Tutti i campi sono obbligatori");
+      toast.error("Tutti i campi sono obbligatori");
       return;
     }
 
@@ -25,20 +26,17 @@ export default function RegisterPage() {
 
       const data = await apiFetch("/auth/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
         body: JSON.stringify(form)
       });
 
       if (!data) return;
 
       if (data.error) {
-        alert(data.error);
+        toast.error(data.error);
         return;
       }
 
-      alert("Registrazione completata!");
+      toast.success("Registrazione completata!");
 
       setForm({
         email: "",
@@ -49,6 +47,7 @@ export default function RegisterPage() {
 
     } catch (err) {
       console.log("Errore register:", err);
+      toast.error("Errore di rete");
     } finally {
       setLoading(false);
     }

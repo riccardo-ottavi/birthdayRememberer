@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../api";
 import { AuthContext } from "../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -15,6 +16,11 @@ export default function LoginPage() {
   async function handleLogin(e) {
     e.preventDefault();
 
+    if (!form.email.trim() || !form.password.trim()) {
+      toast.error("Compila tutti i campi");
+      return;
+    }
+
     try {
       const res = await apiFetch("/auth/login", {
         method: "POST",
@@ -26,17 +32,20 @@ export default function LoginPage() {
 
       console.log("LOGIN RESPONSE:", res);
 
-      if (res.error) {
-        alert(res.error);
+      if (!res.ok) {
+        toast.error(res.data?.error || "Login fallito");
         return;
       }
 
       login(res.data.token);
 
+      toast.success("Login effettuato!");
+
       navigate("/");
 
     } catch (err) {
       console.log("Errore login:", err);
+      toast.error("Errore di rete");
     }
   }
 

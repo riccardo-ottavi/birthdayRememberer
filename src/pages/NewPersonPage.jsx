@@ -1,6 +1,7 @@
 import { useContext, useState, useMemo } from "react";
 import { PeopleContext } from "../contexts/PeopleContext";
 import { authHeaders, API, apiFetch } from "../api";
+import toast from "react-hot-toast";
 
 export default function NewPersonPage() {
   const [formData, setFormData] = useState({
@@ -14,36 +15,36 @@ export default function NewPersonPage() {
   const symbols = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "="];
 
   async function handleSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const res = await apiFetch(`/people`, {
-        method: "POST",
-        headers: authHeaders(),
-        body: JSON.stringify(formData)
-      });
+  try {
+    const res = await apiFetch("/people", {
+      method: "POST",
+      body: JSON.stringify(formData)
+    });
 
-      if (!res) return;
+    if (!res) return;
 
-      if (res.error) {
-        alert(res.error);
-        return;
-      }
-
-      console.log("Nuova persona aggiunta:", res);
-
-      await refreshPeople();
-
-      setFormData({
-        firstName: "",
-        lastName: "",
-        birthDate: ""
-      });
-
-    } catch (error) {
-      console.error("Errore durante l'invio:", error);
+    if (!res.ok) {
+      toast.error(res.data?.error || "Errore inserimento");
+      return;
     }
+
+    toast.success("Persona aggiunta!");
+
+    await refreshPeople();
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      birthDate: ""
+    });
+
+  } catch (error) {
+    console.error("Errore durante l'invio:", error);
+    toast.error("Errore di rete");
   }
+}
 
   const fieldError = useMemo(() => {
     if (!formData.firstName?.trim()) return "Il nome è obbligatorio!";

@@ -1,4 +1,5 @@
 import './App.css'
+import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { AuthProvider } from "./contexts/AuthContext";
@@ -17,6 +18,7 @@ function App() {
     <AuthProvider>
       <PeopleProvider>
         <BrowserRouter>
+          <Toaster position="top-right" />
           <NavBar />
 
           <Routes>
