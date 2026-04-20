@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from "react";
-import { API, authHeaders } from "../api";
+import { API, authHeaders, apiFetch } from "../api";
 import { PeopleContext } from "../contexts/PeopleContext";
 
 export default function HomePage() {
   const [now, setNow] = useState(new Date());
   const [birthdayPerson, setBirthdayPerson] = useState([]);
   const { people } = useContext(PeopleContext)  
+
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(new Date());
@@ -14,22 +15,6 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    async function fetchPeople() {
-      try {
-        const res = await fetch(`${API}/people`, {
-          headers: authHeaders()
-        });
-
-        const data = await res.json();
-        setPeople(data);
-      } catch (err) {
-        console.log("Errore fetch people:", err);
-      }
-    }
-
-    fetchPeople();
-  }, []);
 
   useEffect(() => {
     const today = new Date();

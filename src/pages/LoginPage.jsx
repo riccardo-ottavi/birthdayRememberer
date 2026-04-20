@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../api";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -10,33 +11,31 @@ export default function LoginPage() {
   });
 
   async function handleLogin(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
+  try {
+    const data = await apiFetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    });
 
-      const data = await res.json();
+    console.log("LOGIN RESPONSE:", data);
 
-      console.log("LOGIN RESPONSE:", data);
-
-      if (!res.ok) {
-        alert(data.error);
-        return;
-      }
-
-      localStorage.setItem("token", data.token);
-
-      navigate("/");
-    } catch (err) {
-      console.log("Errore login:", err);
+    if (data.error) {
+      alert(data.error);
+      return;
     }
+
+    localStorage.setItem("token", data.token);
+
+    navigate("/");
+  } catch (err) {
+    console.log("Errore login:", err);
   }
+}
 
   return (
     <form onSubmit={handleLogin}>

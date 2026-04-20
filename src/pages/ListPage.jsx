@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { PeopleContext } from "../contexts/PeopleContext";
 import Modal from "../components/Modal";
-import { authHeaders, API } from "../api";
+import { authHeaders, API, apiFetch } from "../api";
 
 export default function ListPage() {
   const { people, refreshPeople } = useContext(PeopleContext);
@@ -10,26 +10,26 @@ export default function ListPage() {
   const [personToRemove, setPersonToRemove] = useState(null);
 
   async function handleDelete(id) {
-    try {
-      const response = await fetch(`${API}/people/${id}`, {
-        method: "DELETE",
-        headers: authHeaders()
-      });
+  try {
+    const data = await apiFetch(`${API}/people/${id}`, {
+      method: "DELETE",
+      headers: authHeaders()
+    });
 
-      const data = await response.json();
+    if (!data) return;  
 
-      if (!response.ok) {
-        alert(data.error || "Errore eliminazione");
-        return;
-      }
-
-      console.log(data.message, data.deletedPerson);
-
-      await refreshPeople();
-    } catch (error) {
-      console.error("Errore eliminazione:", error);
+    if (data.error) {
+      alert(data.error || "Errore eliminazione");
+      return;
     }
+
+    console.log(data.message, data.deletedPerson);
+
+    await refreshPeople();
+  } catch (error) {
+    console.error("Errore eliminazione:", error);
   }
+}
 
   return (
     <div className="container">
