@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../api";
+import { PeopleContext } from "../contexts/PeopleContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+
+  const {refreshPeople} = useContext(PeopleContext);
+  const { login } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     email: "",
@@ -11,31 +16,32 @@ export default function LoginPage() {
   });
 
   async function handleLogin(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const data = await apiFetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
+  try {
+    const data = await apiFetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    });
 
-      console.log("LOGIN RESPONSE:", data);
+    console.log("LOGIN RESPONSE:", data);
 
-      if (data.error) {
-        alert(data.error);
-        return;
-      }
-
-      localStorage.setItem("token", data.token);
-
-      navigate("/");
-    } catch (err) {
-      console.log("Errore login:", err);
+    if (data.error) {
+      alert(data.error);
+      return;
     }
+    
+    login(data.token);
+
+    navigate("/");
+
+  } catch (err) {
+    console.log("Errore login:", err);
   }
+}
 
   return (
     <form onSubmit={handleLogin}>

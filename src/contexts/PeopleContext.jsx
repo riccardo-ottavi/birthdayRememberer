@@ -8,6 +8,12 @@ export function PeopleProvider({ children }) {
   const { token } = useContext(AuthContext);
   const [people, setPeople] = useState([]);
 
+  useEffect(() => {
+  if (!token) {
+    setPeople([]);
+  }
+}, [token]);
+
   async function fetchPeople() {
   if (!token) return;
 
