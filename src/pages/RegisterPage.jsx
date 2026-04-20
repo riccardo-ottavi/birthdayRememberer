@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../api";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -10,11 +10,11 @@ export default function LoginPage() {
     password: ""
   });
 
-  async function handleLogin(e) {
+  async function handleRegister(e) {
     e.preventDefault();
 
     try {
-      const data = await apiFetch("http://localhost:3000/auth/login", {
+      const data = await apiFetch("http://localhost:3000/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -22,23 +22,23 @@ export default function LoginPage() {
         body: JSON.stringify(form)
       });
 
-      console.log("LOGIN RESPONSE:", data);
+      if (!data) return;
 
       if (data.error) {
         alert(data.error);
         return;
       }
 
-      localStorage.setItem("token", data.token);
+      alert("Registrazione completata!");
 
-      navigate("/");
+      navigate("/login");
     } catch (err) {
-      console.log("Errore login:", err);
+      console.log("Errore register:", err);
     }
   }
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleRegister}>
       <input
         placeholder="email"
         onChange={(e) =>
@@ -54,12 +54,7 @@ export default function LoginPage() {
         }
       />
 
-      <button>Login</button>
-
-      <p>
-        Non hai un account? <a href="/register">Registrati</a>
-      </p>
-
+      <button>Registrati</button>
     </form>
   );
 }
