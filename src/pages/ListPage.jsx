@@ -11,7 +11,7 @@ export default function ListPage() {
 
   async function handleDelete(id) {
   try {
-    const data = await apiFetch(`${API}/people/${id}`, {
+    const data = await apiFetch(`/people/${id}`, {
       method: "DELETE",
       headers: authHeaders()
     });

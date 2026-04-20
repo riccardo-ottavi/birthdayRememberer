@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { AuthContext } from "./AuthContext";
-import { API, apiFetch } from "../api";
+import { apiFetch } from "../api";
 
 export const PeopleContext = createContext();
 
@@ -8,34 +8,26 @@ export function PeopleProvider({ children }) {
   const { token } = useContext(AuthContext);
   const [people, setPeople] = useState([]);
 
-  useEffect(() => {
-  if (!token) {
-    setPeople([]);
-  }
-}, [token]);
-
   async function fetchPeople() {
-  if (!token) return;
+    if (!token) return;
 
-  try {
-    const data = await apiFetch(`${API}/people`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    try {
+      const res = await apiFetch("/people");
 
-    setPeople(data);
-  } catch (err) {
-    console.log("Errore fetch people:", err);
+      if (!res.ok) return;
+
+      setPeople(res.data);
+    } catch (err) {
+      console.log("Errore fetch people:", err);
+    }
   }
-}
 
   useEffect(() => {
     fetchPeople();
   }, [token]);
 
-  async function refreshPeople() {
-    await fetchPeople();
+  function refreshPeople() {
+    fetchPeople();
   }
 
   return (

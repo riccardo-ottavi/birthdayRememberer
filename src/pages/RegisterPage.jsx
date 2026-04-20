@@ -10,11 +10,20 @@ export default function RegisterPage() {
     password: ""
   });
 
+  const [loading, setLoading] = useState(false);
+
   async function handleRegister(e) {
     e.preventDefault();
 
+    if (!form.email.trim() || !form.password.trim()) {
+      alert("Tutti i campi sono obbligatori");
+      return;
+    }
+
     try {
-      const data = await apiFetch("http://localhost:3000/auth/register", {
+      setLoading(true);
+
+      const data = await apiFetch("/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -31,9 +40,17 @@ export default function RegisterPage() {
 
       alert("Registrazione completata!");
 
+      setForm({
+        email: "",
+        password: ""
+      });
+
       navigate("/login");
+
     } catch (err) {
       console.log("Errore register:", err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -41,6 +58,7 @@ export default function RegisterPage() {
     <form onSubmit={handleRegister}>
       <input
         placeholder="email"
+        value={form.email}
         onChange={(e) =>
           setForm({ ...form, email: e.target.value })
         }
@@ -49,12 +67,15 @@ export default function RegisterPage() {
       <input
         type="password"
         placeholder="password"
+        value={form.password}
         onChange={(e) =>
           setForm({ ...form, password: e.target.value })
         }
       />
 
-      <button>Registrati</button>
+      <button disabled={loading}>
+        {loading ? "Registrazione..." : "Registrati"}
+      </button>
     </form>
   );
 }

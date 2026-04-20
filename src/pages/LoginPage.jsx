@@ -1,13 +1,10 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../api";
-import { PeopleContext } from "../contexts/PeopleContext";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-
-  const {refreshPeople} = useContext(PeopleContext);
   const { login } = useContext(AuthContext);
 
   const [form, setForm] = useState({
@@ -16,32 +13,32 @@ export default function LoginPage() {
   });
 
   async function handleLogin(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const data = await apiFetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(form)
-    });
+    try {
+      const res = await apiFetch("/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form)
+      });
 
-    console.log("LOGIN RESPONSE:", data);
+      console.log("LOGIN RESPONSE:", res);
 
-    if (data.error) {
-      alert(data.error);
-      return;
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
+
+      login(res.data.token);
+
+      navigate("/");
+
+    } catch (err) {
+      console.log("Errore login:", err);
     }
-    
-    login(data.token);
-
-    navigate("/");
-
-  } catch (err) {
-    console.log("Errore login:", err);
   }
-}
 
   return (
     <form onSubmit={handleLogin}>
@@ -65,7 +62,6 @@ export default function LoginPage() {
       <p>
         Non hai un account? <a href="/register">Registrati</a>
       </p>
-
     </form>
   );
 }

@@ -14,37 +14,36 @@ export default function NewPersonPage() {
   const symbols = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "="];
 
   async function handleSubmit(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const data = await apiFetch(`${API}/people`, {
-      method: "POST",
-      headers: authHeaders(),
-      body: JSON.stringify(formData)
-    });
+    try {
+      const res = await apiFetch(`/people`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify(formData)
+      });
 
-    if (!data) return;  
+      if (!res) return;
 
-    if (data.error) {
-      alert(data.error || "Errore inserimento");
-      return;
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
+
+      console.log("Nuova persona aggiunta:", res);
+
+      await refreshPeople();
+
+      setFormData({
+        firstName: "",
+        lastName: "",
+        birthDate: ""
+      });
+
+    } catch (error) {
+      console.error("Errore durante l'invio:", error);
     }
-
-    console.log("Nuova persona aggiunta:", data);
-
-    await refreshPeople();
-
-    setFormData({
-      firstName: "",
-      lastName: "",
-      birthDate: ""
-    });
-
-    alert("Inserimento riuscito!");
-  } catch (error) {
-    console.error("Errore durante l'invio:", error);
   }
-}
 
   const fieldError = useMemo(() => {
     if (!formData.firstName?.trim()) return "Il nome è obbligatorio!";
@@ -57,10 +56,7 @@ export default function NewPersonPage() {
     if (!isFieldValid(formData.lastName))
       return "Il cognome contiene caratteri non validi";
 
-    const today = new Date();
-    const selectedDate = new Date(formData.birthDate);
-
-    if (selectedDate > today) {
+    if (new Date(formData.birthDate) > new Date()) {
       return "La data non può essere nel futuro";
     }
 
@@ -73,7 +69,8 @@ export default function NewPersonPage() {
 
   function setFieldValue(e) {
     const { value, name } = e.target;
-    setFormData((prev) => ({
+
+    setFormData(prev => ({
       ...prev,
       [name]: value
     }));
@@ -107,9 +104,7 @@ export default function NewPersonPage() {
         />
 
         {fieldError && (
-          <p style={{ color: "red", marginTop: "10px" }}>
-            {fieldError}
-          </p>
+          <p style={{ color: "red" }}>{fieldError}</p>
         )}
 
         <button type="submit" disabled={!!fieldError}>
