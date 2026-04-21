@@ -50,27 +50,27 @@ export default function LoginPage() {
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        placeholder="email"
-        onChange={(e) =>
-          setForm({ ...form, email: e.target.value })
-        }
-      />
+    <div className="container">
+      <form onSubmit={handleLogin}>
+        <input
+          placeholder="email"
+          onChange={(e) =>
+            setForm({ ...form, email: e.target.value })
+          }
+        />
+        <input
+          type="password"
+          placeholder="password"
+          onChange={(e) =>
+            setForm({ ...form, password: e.target.value })
+          }
+        />
 
-      <input
-        type="password"
-        placeholder="password"
-        onChange={(e) =>
-          setForm({ ...form, password: e.target.value })
-        }
-      />
-
-      <button>Login</button>
-
-      <p>
-        Non hai un account? <a href="/register">Registrati</a>
-      </p>
-    </form>
+        <button>Login</button>
+        <p>
+          Non hai un account? <a href="/register">Registrati</a>
+        </p>
+      </form>
+    </div>
   );
 }
