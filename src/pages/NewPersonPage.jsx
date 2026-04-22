@@ -1,6 +1,5 @@
 import { useContext, useState, useMemo } from "react";
 import { PeopleContext } from "../contexts/PeopleContext";
-import { authHeaders, API, apiFetch } from "../api";
 import toast from "react-hot-toast";
 
 export default function NewPersonPage() {
@@ -10,41 +9,28 @@ export default function NewPersonPage() {
     birthDate: ""
   });
 
-  const { refreshPeople } = useContext(PeopleContext);
+  const { createPerson } = useContext(PeopleContext);
 
   const symbols = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "="];
 
   async function handleSubmit(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await apiFetch("/people", {
-      method: "POST",
-      body: JSON.stringify(formData)
-    });
+    const result = await createPerson(formData);
 
-    if (!res) return;
-
-    if (!res.ok) {
-      toast.error(res.data?.error || "Errore inserimento");
+    if (!result.success) {
+      toast.error(result.error || "Errore inserimento");
       return;
     }
 
     toast.success("Persona aggiunta!");
-
-    await refreshPeople();
 
     setFormData({
       firstName: "",
       lastName: "",
       birthDate: ""
     });
-
-  } catch (error) {
-    console.error("Errore durante l'invio:", error);
-    toast.error("Errore di rete");
   }
-}
 
   const fieldError = useMemo(() => {
     if (!formData.firstName?.trim()) return "Il nome è obbligatorio!";

@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
+import { authHeaders } from "../api";
 
 export default function EditModal({
   title,
