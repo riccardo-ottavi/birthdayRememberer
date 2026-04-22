@@ -18,7 +18,7 @@ header {
   height: 80px;
   display: flex;
   gap: 30px;
-  background-color: #faffee;
+  background-color: #fdfffa;
   margin-bottom: 10vh;
   justify-content: center;
   align-items: center;
@@ -58,7 +58,7 @@ header img{
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-  background-color: #faffee;
+  background-color: #fdfffa;
   border-radius: 10px;
   margin-bottom: 50px;
 }
@@ -79,7 +79,7 @@ header img{
 .modal {
   width: 400px;
   padding: 24px;
-  background-color: #faffee;
+  background-color: #fdfffa;
   border-radius: 12px;
   display: flex;
   flex-direction: column;

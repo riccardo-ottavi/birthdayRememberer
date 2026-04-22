@@ -15,9 +15,9 @@ import RegisterPage from './pages/RegisterPage';
 
 function App() {
   return (
-    <AuthProvider>
-      <PeopleProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <PeopleProvider>
           <Toaster position="top-right" />
           <Header />
 
@@ -43,10 +43,10 @@ function App() {
               </ProtectedRoute>
             } />
           </Routes>
-        </BrowserRouter>
-      </PeopleProvider>
-    </AuthProvider>
-  )
+        </PeopleProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
 export default App

@@ -5,6 +5,9 @@ import { AuthContext } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
+
+
+
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -14,38 +17,45 @@ export default function LoginPage() {
   });
 
   async function handleLogin(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const email = form.email.trim();
-  const password = form.password.trim();
+    const email = form.email.trim();
+    const password = form.password.trim();
 
-  if (!email || !password) {
-    toast.error("Inserisci email e password");
-    return;
-  }
-
-  try {
-    const res = await apiFetch("/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
-
-    const data = await res;
-
-    if (!res.ok) {
-      toast.error(data.error || "Credenziali non valide");
+    if (!email || !password) {
+      toast.error("Inserisci email e password");
       return;
     }
 
-    login(data.token);
-    toast.success("Login effettuato!");
-    navigate("/");
+    try {
+      const res = await apiFetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
 
-  } catch (err) {
-    toast.error("Errore di rete, riprova");
+      const data = await res.json?.() || res.data;
+      console.log("STEP 2 - RESPONSE:", data);
+
+      if (!res.ok) {
+        toast.error(data.error || "Credenziali non valide");
+        return;
+      }
+
+      login(data.token);
+      toast.success("Login effettuato!");
+      navigate("/");
+      login(data.token);
+
+      toast.success("Login effettuato!");
+
+      navigate("/", { replace: true });
+
+    } catch (err) {
+      toast.error("Errore di rete, riprova");
+    }
   }
-}
+
 
   return (
     <div className="container">
