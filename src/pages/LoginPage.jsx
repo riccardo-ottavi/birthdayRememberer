@@ -14,40 +14,38 @@ export default function LoginPage() {
   });
 
   async function handleLogin(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!form.email.trim() || !form.password.trim()) {
-      toast.error("Compila tutti i campi");
+  const email = form.email.trim();
+  const password = form.password.trim();
+
+  if (!email || !password) {
+    toast.error("Inserisci email e password");
+    return;
+  }
+
+  try {
+    const res = await apiFetch("/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res;
+
+    if (!res.ok) {
+      toast.error(data.error || "Credenziali non valide");
       return;
     }
 
-    try {
-      const res = await apiFetch("/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
+    login(data.token);
+    toast.success("Login effettuato!");
+    navigate("/");
 
-      console.log("LOGIN RESPONSE:", res);
-
-      if (!res.ok) {
-        toast.error(res.data?.error || "Login fallito");
-        return;
-      }
-
-      login(res.data.token);
-
-      toast.success("Login effettuato!");
-
-      navigate("/");
-
-    } catch (err) {
-      console.log("Errore login:", err);
-      toast.error("Errore di rete");
-    }
+  } catch (err) {
+    toast.error("Errore di rete, riprova");
   }
+}
 
   return (
     <div className="container">

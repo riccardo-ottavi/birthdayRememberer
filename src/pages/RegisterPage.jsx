@@ -14,44 +14,53 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   async function handleRegister(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!form.email.trim() || !form.password.trim()) {
-      toast.error("Tutti i campi sono obbligatori");
+  const email = form.email.trim();
+  const password = form.password.trim();
+
+  if (!email || !password) {
+    toast.error("Compila tutti i campi");
+    return;
+  }
+
+  if (password.length < 6) {
+    toast.error("La password deve avere almeno 6 caratteri");
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    toast.error("Email non valida");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const res = await apiFetch("/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res;
+
+    if (!res.ok) {
+      toast.error(data.error || "Errore registrazione");
       return;
     }
 
-    try {
-      setLoading(true);
+    toast.success("Registrazione completata!");
+    setForm({ email: "", password: "" });
+    navigate("/login");
 
-      const data = await apiFetch("/auth/register", {
-        method: "POST",
-        body: JSON.stringify(form)
-      });
-
-      if (!data) return;
-
-      if (data.error) {
-        toast.error(data.error);
-        return;
-      }
-
-      toast.success("Registrazione completata!");
-
-      setForm({
-        email: "",
-        password: ""
-      });
-
-      navigate("/login");
-
-    } catch (err) {
-      console.log("Errore register:", err);
-      toast.error("Errore di rete");
-    } finally {
-      setLoading(false);
-    }
+  } catch (err) {
+    toast.error("Errore di rete");
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
     <div className="container">

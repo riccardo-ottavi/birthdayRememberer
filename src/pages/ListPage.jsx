@@ -43,6 +43,9 @@ export default function ListPage() {
 
   return (
     <div className="container">
+      {people.length === 0 && (
+        <p>Non hai ancora aggiunto nessuno!</p>
+      )}
       {people?.map(person => (
         <PersonCard
           key={person._id}
