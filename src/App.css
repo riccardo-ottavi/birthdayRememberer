@@ -1,29 +1,56 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body{
-  background-color: rgb(145, 215, 255);
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg,
+      #dff6ff 0%,
+      #bde0fe 40%,
+      #90dbf4 75%,
+      #72c3dc 100%);
   font-family: 'Inter', sans-serif;
+}
+
+header {
+  height: 80px;
+  display: flex;
+  gap: 30px;
+  background-color: #faffee;
+  margin-bottom: 10vh;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 nav{
   display: flex;
-  gap: 30px;
-  background-color: white;
-  margin-bottom: 10vh;
-  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  right: 20px;
+  bottom: 25px;
 }
 
-a{
+a {
   text-decoration: none;
   color: black;
   font-size: 28px;
 }
 
-.container{
+
+
+header img{
+  height: 50px;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.container {
   min-height: 35vh;
   width: 35vw;
   display: flex;
@@ -31,12 +58,12 @@ a{
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: #faffee;
   border-radius: 10px;
   margin-bottom: 50px;
 }
 
-.container-modal{
+.container-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -52,7 +79,7 @@ a{
 .modal {
   width: 400px;
   padding: 24px;
-  background-color: white;
+  background-color: faffee;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -61,11 +88,19 @@ a{
   align-items: center;
 }
 
-.person-card{
+.person-card {
+  padding: 10px;
   border: 1px solid black;
   width: 350px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom:10px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.person-card button{
+  width: 70px;
+  background-color:#dddcff;
+  border-radius: 5px;
 }

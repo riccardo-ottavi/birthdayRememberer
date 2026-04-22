@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from "./contexts/AuthContext";
 import { PeopleProvider } from "./contexts/PeopleContext";
 
-import NavBar from './components/NavBar'
+import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import NewPersonPage from './pages/NewPersonPage'
 import ListPage from './pages/ListPage'
@@ -19,7 +19,7 @@ function App() {
       <PeopleProvider>
         <BrowserRouter>
           <Toaster position="top-right" />
-          <NavBar />
+          <Header />
 
           <Routes>
             <Route path="/login" element={<LoginPage />} />

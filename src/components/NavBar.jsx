@@ -19,9 +19,9 @@ export default function NavBar() {
                 <NavLink to={'/'}>Home</NavLink>
                 <NavLink to={'/list'}>List</NavLink>
                 <NavLink to={'/new'}>New</NavLink>
-                <button onClick={handleLogout}>
+                <h3 onClick={handleLogout} className="pointer">
                     Logout
-                </button>
+                </h3>
             </nav>
         </div>
     )
