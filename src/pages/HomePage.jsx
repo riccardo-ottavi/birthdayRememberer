@@ -7,6 +7,14 @@ export default function HomePage() {
   const [birthdayPerson, setBirthdayPerson] = useState([]);
   const { people } = useContext(PeopleContext)
 
+
+  function getAgeToday(birthDate) {
+  const today = new Date();
+  const bday = new Date(birthDate);
+
+  return today.getFullYear() - bday.getFullYear();
+}
+
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(new Date());
@@ -44,7 +52,7 @@ export default function HomePage() {
 
           {birthdayPerson.map(p => (
             <div key={p._id}>
-              <p>{p.firstName}{p.lastName}</p>
+              <p>{p.firstName}{p.lastName} compie {getAgeToday(p.birthDate)} anni</p>
             </div>
           ))}
         </>
