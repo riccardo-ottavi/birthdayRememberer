@@ -13,7 +13,7 @@ nav{
   display: flex;
   gap: 30px;
   background-color: white;
-  margin-bottom: 20vh;
+  margin-bottom: 10vh;
   justify-content: center;
 }
 
@@ -24,7 +24,7 @@ a{
 }
 
 .container{
-  height: 35vh;
+  min-height: 35vh;
   width: 35vw;
   display: flex;
   flex-direction: column;
@@ -33,6 +33,7 @@ a{
   align-items: center;
   background-color: white;
   border-radius: 10px;
+  margin-bottom: 50px;
 }
 
 .container-modal{
@@ -58,4 +59,13 @@ a{
   gap: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   align-items: center;
+}
+
+.person-card{
+  border: 1px solid black;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }

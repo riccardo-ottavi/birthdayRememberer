@@ -3,6 +3,7 @@ import { PeopleContext } from "../contexts/PeopleContext";
 import Modal from "../components/Modal";
 import { authHeaders, API, apiFetch } from "../api";
 import toast from "react-hot-toast";
+import PersonCard from "../components/PersonCard";
 
 
 export default function ListPage() {
@@ -12,49 +13,40 @@ export default function ListPage() {
   const [personToRemove, setPersonToRemove] = useState(null);
 
   async function handleDelete(id) {
-  try {
-    const res = await apiFetch(`/people/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      const res = await apiFetch(`/people/${id}`, {
+        method: "DELETE",
+      });
 
-    if (!res) return;
+      if (!res) return;
 
-    if (!res.ok) {
-      toast.error(res.data?.error || "Errore eliminazione");
-      return;
+      if (!res.ok) {
+        toast.error(res.data?.error || "Errore eliminazione");
+        return;
+      }
+
+      toast.success("Contatto eliminato");
+
+      await refreshPeople();
+
+    } catch (error) {
+      console.error("Errore eliminazione:", error);
+      toast.error("Errore di rete");
     }
-
-    toast.success("Contatto eliminato");
-
-    await refreshPeople();
-
-  } catch (error) {
-    console.error("Errore eliminazione:", error);
-    toast.error("Errore di rete");
   }
-}
 
   return (
     <div className="container">
       {people?.map(person => {
-        const birthDate = new Date(person.birthDate);
-
         return (
-          <div key={person._id}>
-            <p>
-              {person.firstName} {person.lastName} -{" "}
-              {birthDate.toLocaleDateString("it-IT")}
-            </p>
-
-            <button
-              onClick={() => {
-                setPersonToRemove(person);
-                setShowRemove(true);
-              }}
-            >
-              Elimina
-            </button>
-          </div>
+          <PersonCard
+            key={person._id}
+            person={person}
+            onDelete={() => {
+              setPersonToRemove(person);
+              setShowRemove(true);
+            }}
+          />
         );
       })}
 
