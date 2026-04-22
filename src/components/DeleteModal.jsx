@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 
-export default function Modal({ title, content, show, onClose, onConfirm, confirmText = "Conferma" }){
-    
+export default function DeleteModal({ title, content, show, onClose, onConfirm, confirmText = "Conferma" }){
+    console.log("EditModal show:", show);
     return show && ReactDOM.createPortal(
         <div className="container-modal">
             <div className="modal">

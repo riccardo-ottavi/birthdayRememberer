@@ -5,7 +5,6 @@ export default function Header(){
         <header>
             <img src="../img/assistant-logo.png" alt="" />
             <img src="../img/assistant-title.png" alt="" />
-            <img src="" alt="" />
             <NavBar />
         </header>
     )
