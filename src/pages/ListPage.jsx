@@ -8,53 +8,37 @@ import PersonCard from "../components/PersonCard";
 
 
 export default function ListPage() {
-  const { people, refreshPeople } = useContext(PeopleContext);
+  const { people, refreshPeople, removePerson, updatePerson } = useContext(PeopleContext);
 
   const [showRemove, setShowRemove] = useState(false);
   const [personToRemove, setPersonToRemove] = useState(null);
   const [showEdit, setShowEdit] = useState(false);
   const [personToEdit, setPersonToEdit] = useState(null);
 
-  async function handleEdit(updatedPerson) {
-    const res = await apiFetch(`/people/${personToEdit._id}`, {
-      method: "PUT",
-      headers: authHeaders(),
-      body: JSON.stringify(updatedPerson)
-    });
+ async function handleEdit(updatedPerson) {
+  const res = await apiFetch(`/people/${personToEdit._id}`, {
+    method: "PUT",
+    headers: authHeaders(),
+    body: JSON.stringify(updatedPerson)
+  });
 
-    if (!res.ok) {
-      toast.error(res.data?.error);
-      return;
-    }
+  if (!res.ok) return;
 
-    toast.success("Persona aggiornata!");
-    await refreshPeople();
-    setShowEdit(false);
-  }
+  updatePerson(res.data); 
+  setShowEdit(false);
+  toast.success("Persona Aggiornata!");
+}
 
 
   async function handleDelete(id) {
-    try {
-      const res = await apiFetch(`/people/${id}`, {
-        method: "DELETE",
-      });
+  const res = await apiFetch(`/people/${id}`, {
+    method: "DELETE",
+  });
 
-      if (!res) return;
-
-      if (!res.ok) {
-        toast.error(res.data?.error || "Errore eliminazione");
-        return;
-      }
-
-      toast.success("Contatto eliminato");
-
-      await refreshPeople();
-
-    } catch (error) {
-      console.error("Errore eliminazione:", error);
-      toast.error("Errore di rete");
-    }
-  }
+  if (!res.ok) return;
+  toast.success("Persona Eliminata!");
+  removePerson(id);  
+}
 
   return (
     <div className="container">

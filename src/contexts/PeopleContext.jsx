@@ -8,9 +8,25 @@ export function PeopleProvider({ children }) {
   const { token } = useContext(AuthContext);
   const [people, setPeople] = useState([]);
 
-  async function fetchPeople() {
+  useEffect(() => {
     if (!token) return;
 
+    const fetchPeople = async () => {
+      try {
+        const res = await apiFetch("/people");
+
+        if (!res.ok) return;
+
+        setPeople(res.data);
+      } catch (err) {
+        console.log("Errore fetch people:", err);
+      }
+    };
+
+    fetchPeople();
+  }, [token]);
+
+  async function refreshPeople() {
     try {
       const res = await apiFetch("/people");
 
@@ -18,23 +34,36 @@ export function PeopleProvider({ children }) {
 
       setPeople(res.data);
     } catch (err) {
-      console.log("Errore fetch people:", err);
+      console.log("Errore refresh people:", err);
     }
   }
 
-  useEffect(() => {
-    fetchPeople();
-  }, [token]);
+  function updatePerson(updatedPerson) {
+    setPeople(prev =>
+      prev.map(p =>
+        p._id === updatedPerson._id ? updatedPerson : p
+      )
+    );
+  }
 
-  function refreshPeople() {
-    fetchPeople();
+  function removePerson(id) {
+    setPeople(prev =>
+      prev.filter(p => p._id !== id)
+    );
+  }
+
+  function addPerson(newPerson) {
+    setPeople(prev => [newPerson, ...prev]);
   }
 
   return (
     <PeopleContext.Provider value={{
       people,
       setPeople,
-      refreshPeople
+      refreshPeople,
+      updatePerson,
+      removePerson,
+      addPerson
     }}>
       {children}
     </PeopleContext.Provider>
