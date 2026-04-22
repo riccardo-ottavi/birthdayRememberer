@@ -5,7 +5,7 @@ import { PeopleContext } from "../contexts/PeopleContext";
 export default function HomePage() {
   const [now, setNow] = useState(new Date());
   const [birthdayPerson, setBirthdayPerson] = useState([]);
-  const { people } = useContext(PeopleContext)  
+  const { people } = useContext(PeopleContext)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,17 +37,19 @@ export default function HomePage() {
         {now.toLocaleDateString("it-IT")} -{" "}
         {now.toLocaleTimeString("it-IT")}
       </h2>
-
-      <h3>Today's birthdays:</h3>
-
+      
       {birthdayPerson.length > 0 ? (
-        birthdayPerson.map(p => (
-          <div key={p._id}>
-            <p>{p.firstName} {p.lastName}</p>
-          </div>
-        ))
+        <>
+          <img src="../img/birthday-celebrate.png" alt="Buon compleanno" style={{ width: "150px" }} />
+
+          {birthdayPerson.map(p => (
+            <div key={p._id}>
+              <p>{p.firstName}{p.lastName}</p>
+            </div>
+          ))}
+        </>
       ) : (
-        <p>No birthdays today!</p>
+        <img src="../img/no-birthdays.png" style={{ width: "450px" }}/>
       )}
     </div>
   );

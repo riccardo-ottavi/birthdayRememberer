@@ -79,7 +79,7 @@ header img{
 .modal {
   width: 400px;
   padding: 24px;
-  background-color: faffee;
+  background-color: #faffee;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -87,6 +87,12 @@ header img{
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   align-items: center;
 }
+
+.birthDay-card{
+  display: flex;
+  align-items: center;
+}
+
 
 .person-card {
   padding: 10px;
