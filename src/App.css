@@ -97,12 +97,13 @@ header img{
 .person-card {
   padding: 10px;
   border: 1px solid black;
-  width: 350px;
+  width: 550px;
   display: flex;
   flex-direction: column;
   margin-bottom:10px;
   margin-top: 10px;
   align-items: center;
+  border-radius: 33px;
 }
 
 .person-card button{
