@@ -1,16 +1,8 @@
-export const API = import.meta.env.VITE_API_URL;
-
-export function authHeaders() {
-  const token = localStorage.getItem("token");
-
-  return {
-    "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` })
-  };
-}
-
 export async function apiFetch(endpoint, options = {}) {
-  const res = await fetch(`${API}${endpoint}`, {
+  const base = API.replace(/\/$/, ""); // rimuove slash finale
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+
+  const res = await fetch(`${base}${path}`, {
     ...options,
     headers: {
       ...authHeaders(),
@@ -28,7 +20,6 @@ export async function apiFetch(endpoint, options = {}) {
 
   if (res.status === 401 || res.status === 403) {
     localStorage.removeItem("token");
-
     window.location.href = "/login";
     return;
   }
@@ -39,3 +30,7 @@ export async function apiFetch(endpoint, options = {}) {
     data
   };
 }
+
+console.log("API:", API);
+console.log("endpoint:", endpoint);
+console.log("FULL:", `${API}${endpoint}`);
