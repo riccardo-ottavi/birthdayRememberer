@@ -44,10 +44,8 @@ export default function RegisterPage() {
       body: JSON.stringify({ email, password })
     });
 
-    const data = await res;
-
     if (!res.ok) {
-      toast.error(data.error || "Errore registrazione");
+      toast.error(res.data?.error || "Errore registrazione");
       return;
     }
 
