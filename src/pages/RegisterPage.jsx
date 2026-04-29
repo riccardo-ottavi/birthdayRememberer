@@ -37,7 +37,7 @@ export default function RegisterPage() {
 
   try {
     setLoading(true);
-
+    console.log("REGISTER CLICKED");
     const res = await apiFetch("/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -80,7 +80,7 @@ export default function RegisterPage() {
           }
         />
 
-        <button disabled={loading}>
+        <button type="submit" disabled={loading}>
           {loading ? "Registrazione..." : "Registrati"}
         </button>
       </form>
