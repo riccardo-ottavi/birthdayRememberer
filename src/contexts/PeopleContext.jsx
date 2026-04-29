@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import { apiFetch } from "../api";
-import { authHeaders } from "../api";
 
 export const PeopleContext = createContext();
 
@@ -68,7 +67,6 @@ export function PeopleProvider({ children }) {
 async function editPerson(id, updatedData) {
   const res = await apiFetch(`/people/${id}`, {
     method: "PUT",
-    headers: authHeaders(),
     body: JSON.stringify(updatedData)
   });
 

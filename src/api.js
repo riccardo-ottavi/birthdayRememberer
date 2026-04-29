@@ -1,5 +1,5 @@
 export async function apiFetch(endpoint, options = {}) {
-  const base = API.replace(/\/$/, ""); // rimuove slash finale
+  const base = API.replace(/\/$/, "");
   const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
 
   const res = await fetch(`${base}${path}`, {
@@ -30,7 +30,3 @@ export async function apiFetch(endpoint, options = {}) {
     data
   };
 }
-
-console.log("API:", API);
-console.log("endpoint:", endpoint);
-console.log("FULL:", `${API}${endpoint}`);
